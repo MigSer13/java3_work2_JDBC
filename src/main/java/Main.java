@@ -63,6 +63,26 @@ public class Main {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+        disconnect();
+    }
+    private static void connect()
+    {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:dataDB.db");
+            statement = connection.createStatement();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void disconnect(){
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     private static void dropTable() throws SQLException
@@ -101,16 +121,7 @@ public class Main {
         connection.setAutoCommit(true);
     }
 
-    private static void connect()
-    {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:dataDB.db");
-            statement = connection.createStatement();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     private static String createTable(String nameTable, HashMap<String, String> columnAndType)
     {
